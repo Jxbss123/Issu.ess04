@@ -18,11 +18,11 @@
 
     #mensaje {
       position: absolute;
-      top: 10%;
+      top: 8%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: #FFD700;
-      font-size: 6vw;
+      font-size: 7vw;
       font-weight: bold;
       text-align: center;
       text-shadow: 0 0 10px #ffff00, 0 0 20px #ffaa00;
@@ -52,14 +52,14 @@
     ajustarTamañoCanvas();
 
     function dibujarFlor(x, y, escala = 1) {
-      const petaloRadio = 10 * escala;
-      const centroRadio = 6 * escala;
+      const petaloRadio = 20 * escala;
+      const centroRadio = 10 * escala;
 
       // Dibujar pétalos (6 pétalos)
       for (let i = 0; i < 6; i++) {
         const ang = (Math.PI * 2 / 6) * i;
-        const px = x + Math.cos(ang) * 15 * escala;
-        const py = y + Math.sin(ang) * 15 * escala;
+        const px = x + Math.cos(ang) * 30 * escala;
+        const py = y + Math.sin(ang) * 30 * escala;
 
         ctx.beginPath();
         ctx.fillStyle = 'yellow';
@@ -74,24 +74,24 @@
       ctx.fill();
     }
 
-    function dibujarTallo(x, y, alto = 40) {
+    function dibujarTallo(x, y, largo = 100) {
       ctx.beginPath();
       ctx.strokeStyle = 'green';
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 5;
       ctx.moveTo(x, y);
-      ctx.lineTo(x, y + alto);
+      ctx.lineTo(x, y + largo);
       ctx.stroke();
     }
 
     function dibujarRamo() {
       const x = canvas.width / 2;
-      const y = canvas.height * 0.75;
+      const y = canvas.height * 0.65;
 
-      // Dibujar envoltura rosa (triángulo)
+      // Dibujar envoltura rosa (triángulo grande)
       ctx.beginPath();
-      ctx.moveTo(x - 60, y);
-      ctx.lineTo(x + 60, y);
-      ctx.lineTo(x, y + 100);
+      ctx.moveTo(x - 100, y);
+      ctx.lineTo(x + 100, y);
+      ctx.lineTo(x, y + 180);
       ctx.closePath();
       ctx.fillStyle = 'pink';
       ctx.fill();
@@ -101,24 +101,24 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const centerX = canvas.width / 2;
-      const baseY = canvas.height * 0.65;
+      const baseY = canvas.height * 0.6;
 
-      // Posiciones relativas para las flores
-      const posiciones = [
-        { x: centerX - 40, y: baseY - 60 },
-        { x: centerX + 40, y: baseY - 60 },
-        { x: centerX - 20, y: baseY - 90 },
-        { x: centerX + 20, y: baseY - 90 },
+      // Coordenadas de las flores dentro del ramo
+      const flores = [
+        { x: centerX - 60, y: baseY - 100 },
+        { x: centerX + 60, y: baseY - 100 },
+        { x: centerX - 20, y: baseY - 130 },
+        { x: centerX + 20, y: baseY - 130 },
       ];
 
-      // Dibujar tallos
-      posiciones.forEach(pos => dibujarTallo(pos.x, pos.y + 10, 70));
+      // Dibujar tallos primero (para que estén debajo de las flores)
+      flores.forEach(pos => dibujarTallo(pos.x, pos.y + 30, 130));
 
-      // Dibujar flores
-      posiciones.forEach(pos => dibujarFlor(pos.x, pos.y, 1));
-
-      // Dibujar ramo rosado (después para superponer bien)
+      // Dibujar ramo después (para que cubra las bases)
       dibujarRamo();
+
+      // Dibujar flores encima
+      flores.forEach(pos => dibujarFlor(pos.x, pos.y, 1.2));
     }
 
     dibujarTodo();
