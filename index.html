@@ -8,21 +8,35 @@
       margin: 0;
       background-color: black;
       overflow: hidden;
+      font-family: 'Courier New', Courier, monospace;
     }
 
     canvas {
       display: block;
     }
+
+    #mensaje {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #FFD700;
+      font-size: 48px;
+      font-weight: bold;
+      text-shadow: 0 0 10px #ffff00, 0 0 20px #ffaa00;
+      z-index: 10;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
+  <div id="mensaje">TE AMO GREYS</div>
   <canvas id="universo"></canvas>
 
   <script>
     const canvas = document.getElementById('universo');
     const ctx = canvas.getContext('2d');
 
-    // Ajustar canvas al tamaño de la ventana
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -32,34 +46,44 @@
     let i = 0;
     const phi = 137.5 * (Math.PI / 180); // ángulo áureo
 
-    function dibujarFlor() {
-      if (i > 500) return; // Límite de pétalos
+    function dibujarTulipan(x, y) {
+      // Tallo/raíz
+      ctx.beginPath();
+      ctx.strokeStyle = 'green';
+      ctx.lineWidth = 2;
+      ctx.moveTo(x, y);
+      ctx.lineTo(x, y + 20);
+      ctx.stroke();
 
-      const r = 4 * Math.sqrt(i);
+      // Pétalos (forma simple de tulipán)
+      ctx.beginPath();
+      ctx.fillStyle = 'yellow';
+      ctx.moveTo(x, y);
+      ctx.bezierCurveTo(x - 5, y - 10, x + 5, y - 10, x, y);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.fillStyle = 'yellow';
+      ctx.moveTo(x, y);
+      ctx.bezierCurveTo(x - 5, y - 5, x - 10, y - 15, x, y - 20);
+      ctx.bezierCurveTo(x + 10, y - 15, x + 5, y - 5, x, y);
+      ctx.fill();
+    }
+
+    function animar() {
+      if (i > 500) return;
+
+      const r = 6 * Math.sqrt(i);
       const theta = i * phi;
       const x = centerX + r * Math.cos(theta);
       const y = centerY + r * Math.sin(theta);
 
-      // Dibujar pétalo
-      ctx.beginPath();
-      ctx.fillStyle = 'yellow';
-      ctx.arc(x, y, 8, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Centro naranja
-      if (i === 0) {
-        ctx.beginPath();
-        ctx.fillStyle = 'orange';
-        ctx.arc(centerX, centerY, 12, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
+      dibujarTulipan(x, y);
       i++;
-      requestAnimationFrame(dibujarFlor);
+      requestAnimationFrame(animar);
     }
 
-    // Empezar la animación
-    dibujarFlor();
+    animar();
   </script>
 </body>
 </html>
