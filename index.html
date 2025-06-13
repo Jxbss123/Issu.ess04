@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Flor Amarilla en el Universo</title>
+  <title>Ramo de Tulipanes para Greys</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
@@ -17,12 +18,13 @@
 
     #mensaje {
       position: absolute;
-      top: 20%;
+      top: 10%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: #FFD700;
-      font-size: 48px;
+      font-size: 6vw;
       font-weight: bold;
+      text-align: center;
       text-shadow: 0 0 10px #ffff00, 0 0 20px #ffaa00;
       z-index: 10;
       pointer-events: none;
@@ -37,53 +39,56 @@
     const canvas = document.getElementById('universo');
     const ctx = canvas.getContext('2d');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function ajustarTamañoCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', ajustarTamañoCanvas);
+    ajustarTamañoCanvas();
 
     const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2 + 50; // Baja ligeramente el centro para evitar tapar el texto
+    const baseY = canvas.height * 0.75; // más abajo para no tapar el mensaje
 
-    let i = 0;
-    const phi = 137.5 * (Math.PI / 180); // ángulo áureo
-
-    function dibujarTulipan(x, y) {
-      // Tallo/raíz
+    function dibujarTulipan(x, y, escala) {
+      // Tallo
       ctx.beginPath();
       ctx.strokeStyle = 'green';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2 * escala;
       ctx.moveTo(x, y);
-      ctx.lineTo(x, y + 20);
+      ctx.lineTo(x, y + 30 * escala);
       ctx.stroke();
 
-      // Pétalos (forma simple de tulipán)
+      // Pétalo central
       ctx.beginPath();
       ctx.fillStyle = 'yellow';
       ctx.moveTo(x, y);
-      ctx.bezierCurveTo(x - 5, y - 10, x + 5, y - 10, x, y);
+      ctx.bezierCurveTo(x - 5 * escala, y - 10 * escala, x + 5 * escala, y - 10 * escala, x, y);
       ctx.fill();
 
+      // Pétalo grande
       ctx.beginPath();
       ctx.fillStyle = 'yellow';
       ctx.moveTo(x, y);
-      ctx.bezierCurveTo(x - 5, y - 5, x - 10, y - 15, x, y - 20);
-      ctx.bezierCurveTo(x + 10, y - 15, x + 5, y - 5, x, y);
+      ctx.bezierCurveTo(x - 6 * escala, y - 6 * escala, x - 10 * escala, y - 18 * escala, x, y - 25 * escala);
+      ctx.bezierCurveTo(x + 10 * escala, y - 18 * escala, x + 6 * escala, y - 6 * escala, x, y);
       ctx.fill();
     }
 
-    function animar() {
-      if (i > 500) return;
-
-      const r = 10 * Math.sqrt(i); // Más espacio entre flores
-      const theta = i * phi;
-      const x = centerX + r * Math.cos(theta);
-      const y = centerY + r * Math.sin(theta);
-
-      dibujarTulipan(x, y);
-      i++;
-      requestAnimationFrame(animar);
+    function dibujarRamo() {
+      const cantidad = 15;
+      const radio = 80;
+      for (let i = 0; i < cantidad; i++) {
+        const angle = (Math.PI * 2 / cantidad) * i - Math.PI / 2;
+        const x = centerX + Math.cos(angle) * (radio * 0.6 + Math.random() * 30);
+        const y = baseY + Math.sin(angle) * (radio * 0.4 + Math.random() * 10);
+        const escala = 0.8 + Math.random() * 0.4;
+        dibujarTulipan(x, y, escala);
+      }
     }
 
-    animar();
+    // Dibuja el ramo al cargar
+    dibujarRamo();
   </script>
 </body>
 </html>
