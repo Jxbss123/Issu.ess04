@@ -51,43 +51,71 @@
 
     ajustarTamañoCanvas();
 
-    function dibujarFlor(x, y, escala = 1) {
+    function dibujarFlor(x, y, escala = 1.5) {
       const petaloRadio = 10 * escala;
       const centroRadio = 6 * escala;
 
       for (let i = 0; i < 6; i++) {
         const ang = (Math.PI * 2 / 6) * i;
-        const px = x + Math.cos(ang) * 15 * escala;
-        const py = y + Math.sin(ang) * 15 * escala;
+        const px = x + Math.cos(ang) * 20 * escala;
+        const py = y + Math.sin(ang) * 20 * escala;
 
         ctx.beginPath();
-        ctx.fillStyle = '#FFFF66'; // amarillo claro
+        ctx.fillStyle = '#FFD1DC'; // rosado suave para pétalos
         ctx.arc(px, py, petaloRadio, 0, Math.PI * 2);
         ctx.fill();
       }
 
       ctx.beginPath();
-      ctx.fillStyle = 'orange';
+      ctx.fillStyle = '#FF69B4'; // centro más intenso
       ctx.arc(x, y, centroRadio, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    function dibujarTallo(x, y, alto = 30) {
+    function dibujarTallo(x, y, alto = 50) {
       ctx.beginPath();
       ctx.strokeStyle = 'green';
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 4;
       ctx.moveTo(x, y);
       ctx.lineTo(x, y + alto);
       ctx.stroke();
     }
 
     function dibujarRamo(x, y) {
+      // Envoltura grande en forma de cono
       ctx.beginPath();
-      ctx.moveTo(x - 60, y);
-      ctx.lineTo(x + 60, y);
-      ctx.lineTo(x, y + 120);
+      ctx.moveTo(x - 100, y);
+      ctx.lineTo(x + 100, y);
+      ctx.lineTo(x, y + 180);
       ctx.closePath();
-      ctx.fillStyle = 'pink';
+      ctx.fillStyle = '#ffc0cb'; // rosado
+      ctx.fill();
+
+      // Líneas de envoltorio
+      ctx.beginPath();
+      ctx.moveTo(x - 60, y + 20);
+      ctx.lineTo(x, y + 160);
+      ctx.lineTo(x + 60, y + 20);
+      ctx.strokeStyle = '#ff99aa';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Lazo decorativo
+      ctx.beginPath();
+      ctx.arc(x, y + 180, 20, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff69b4';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(x - 20, y + 180);
+      ctx.lineTo(x - 40, y + 200);
+      ctx.lineTo(x - 10, y + 190);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(x + 20, y + 180);
+      ctx.lineTo(x + 40, y + 200);
+      ctx.lineTo(x + 10, y + 190);
       ctx.fill();
     }
 
@@ -95,24 +123,24 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const centerX = canvas.width / 2;
-      const baseY = canvas.height * 0.7;
+      const baseY = canvas.height * 0.65;
 
-      // Dibujar el ramo primero (fondo)
+      // Dibujar el ramo primero
       dibujarRamo(centerX, baseY);
 
-      // Posiciones de flores (dentro del ramo)
+      // Posiciones de flores
       const posiciones = [
-        { x: centerX - 30, y: baseY - 50 },
-        { x: centerX + 30, y: baseY - 50 },
-        { x: centerX, y: baseY - 80 },
-        { x: centerX - 15, y: baseY - 20 },
-        { x: centerX + 15, y: baseY - 20 },
+        { x: centerX - 50, y: baseY - 80 },
+        { x: centerX + 50, y: baseY - 80 },
+        { x: centerX - 25, y: baseY - 120 },
+        { x: centerX + 25, y: baseY - 120 },
+        { x: centerX, y: baseY - 150 },
       ];
 
-      // Dibujar tallos y flores
+      // Dibujar flores y tallos
       posiciones.forEach(pos => {
-        dibujarTallo(pos.x, pos.y + 10, 30);
-        dibujarFlor(pos.x, pos.y, 1);
+        dibujarTallo(pos.x, pos.y + 10, 60);
+        dibujarFlor(pos.x, pos.y);
       });
     }
 
