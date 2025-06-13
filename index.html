@@ -1,100 +1,101 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Flores Amarillas</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to top, #fff9c4, #fffde7);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('https://i.imgur.com/WWs3pNU.jpg'); /* fondo con flores amarillas */
+      background-size: cover;
+      background-repeat: repeat;
       text-align: center;
-      color: #444;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
     }
 
     h1 {
-      margin-top: 40px;
-      font-size: 3em;
-      color: #fbc02d;
+      margin-top: 80px;
+      font-size: 2.5em;
+      text-shadow: 2px 2px 5px black;
     }
 
-    .flower-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 40px;
-      gap: 30px;
+    #btnSi, #btnNo {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      margin: 10px;
+      cursor: pointer;
     }
 
-    .flower {
-      width: 120px;
-      height: 120px;
-      background: radial-gradient(circle at center, #fdd835 20%, #fbc02d 60%, #f9a825 100%);
-      border-radius: 50%;
-      position: relative;
-      animation: float 4s ease-in-out infinite;
+    #btnSi {
+      background-color: gold;
+      color: #222;
     }
 
-    .flower::before,
-    .flower::after {
-      content: "";
+    #btnNo {
+      background-color: crimson;
+      color: #fff;
+    }
+
+    #mensaje {
+      margin-top: 30px;
+      font-size: 2em;
+      color: yellow;
+      text-shadow: 1px 1px 3px black;
+    }
+
+    .flor {
+      width: 100px;
       position: absolute;
-      width: 120px;
-      height: 120px;
-      background: inherit;
-      border-radius: 50%;
+      animation: girar 5s infinite linear;
     }
 
-    .flower::before {
-      transform: rotate(45deg);
-    }
-
-    .flower::after {
-      transform: rotate(-45deg);
-    }
-
-    .center {
-      width: 40px;
-      height: 40px;
-      background: #6d4c41;
-      border-radius: 50%;
-      position: absolute;
-      top: 40px;
-      left: 40px;
-      z-index: 10;
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    footer {
-      margin-top: 50px;
-      font-size: 0.9em;
-      color: #888;
+    @keyframes girar {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <h1>🌻 Flores Amarillas 🌻</h1>
 
-  <div class="flower-container">
-    <div class="flower"><div class="center"></div></div>
-    <div class="flower"><div class="center"></div></div>
-    <div class="flower"><div class="center"></div></div>
-    <div class="flower"><div class="center"></div></div>
-    <div class="flower"><div class="center"></div></div>
-  </div>
+  <h1>¿QUIERES TUS FLORES AMARILLAS?</h1>
 
-  <footer>
-    Hecho con 💛 para los amantes de las flores.
-  </footer>
+  <input type="button" onclick="accionParaCuandoEllaTeDigaQueSi()" id="btnSi" value="SI" />
+  <input type="button" onmouseover="mueveElBoton()" id="btnNo" value="NO" />
+
+  <div id="mensaje"></div>
+
+  <script>
+    function accionParaCuandoEllaTeDigaQueSi() {
+      alert("¡FLORES AMARILLAS PARA TI!");
+      document.getElementById("mensaje").innerText = "🌼 FLORES AMARILLAS PARA TI 🌼";
+
+      // Generar 10 flores decorativas
+      for (let i = 0; i < 10; i++) {
+        let flor = document.createElement("img");
+        flor.src = "https://i.imgur.com/Nj2O8bM.png"; // imagen de flor amarilla
+        flor.className = "flor";
+
+        flor.style.top = Math.random() * window.innerHeight + "px";
+        flor.style.left = Math.random() * window.innerWidth + "px";
+
+        document.body.appendChild(flor);
+      }
+    }
+
+    function mueveElBoton() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      const newWidth = Math.random() * (width - 100);
+      const newHeight = Math.random() * (height - 50);
+
+      const btnNo = document.getElementById("btnNo");
+      btnNo.style.position = "absolute";
+      btnNo.style.left = newWidth + "px";
+      btnNo.style.top = newHeight + "px";
+    }
+  </script>
 </body>
 </html>
