@@ -17,7 +17,7 @@
 
     #mensaje {
       position: absolute;
-      top: 50%;
+      top: 20%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: #FFD700;
@@ -41,7 +41,7 @@
     canvas.height = window.innerHeight;
 
     const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
+    const centerY = canvas.height / 2 + 50; // Baja ligeramente el centro para evitar tapar el texto
 
     let i = 0;
     const phi = 137.5 * (Math.PI / 180); // ángulo áureo
@@ -73,7 +73,7 @@
     function animar() {
       if (i > 500) return;
 
-      const r = 6 * Math.sqrt(i);
+      const r = 10 * Math.sqrt(i); // Más espacio entre flores
       const theta = i * phi;
       const x = centerX + r * Math.cos(theta);
       const y = centerY + r * Math.sin(theta);
