@@ -1,46 +1,205 @@
 <!DOCTYPE html>
-<html lang="es">
-<!-- Síguenos en todas las redes como: -->
-<!-- Faster Academy-->
-<!-- Código: Daniel Arteaga de Faster Academy-->
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="Stylesheet" href="style.css">
-    <title>Flower</title>
+    <title>Flores Amarillas para ti</title>
+    <style>
+        body {
+            background-color: #FFC0CB; /* A lovely pink background */
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensures full viewport height */
+            margin: 0;
+            overflow: hidden; /* Hide scrollbars for bouncing flowers */
+            position: relative; /* Needed for absolute positioning of flowers */
+        }
+
+        h1 {
+            color: #8B008B; /* Dark Magenta */
+            margin-bottom: 30px;
+            text-align: center;
+            z-index: 10; /* Ensure text is above flowers */
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px; /* Space between buttons */
+            position: relative; /* For absolute positioning of the "NO" button */
+            z-index: 10; /* Ensure buttons are above flowers */
+        }
+
+        input[type="button"] {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #btnSi {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+
+        #btnSi:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        #btnNo {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+
+        #btnNo:hover {
+            background-color: #da190b;
+        }
+
+        /* Styles for the bouncing flowers in the background */
+        .bouncing-flower {
+            position: absolute;
+            width: 70px; /* Size of the flower image */
+            height: 70px;
+            opacity: 0.6; /* Make them slightly transparent to be background elements */
+            animation: bounce 5s infinite ease-in-out alternate; /* Animation details */
+            pointer-events: none; /* Allows clicks to pass through */
+            z-index: 0; /* Ensure flowers are behind other content */
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(20px); /* Bounces down 20px */
+            }
+        }
+
+        /* Style for the large "SI" flower */
+        #largeFlower {
+            position: fixed; /* Fixed position relative to viewport */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the image */
+            width: 300px; /* Adjust size as needed */
+            height: auto;
+            max-width: 90vw; /* Ensure it fits on smaller screens */
+            max-height: 90vh;
+            display: none; /* Hidden by default */
+            z-index: 100; /* Ensure it's on top of everything */
+            border-radius: 15px; /* Slightly rounded corners */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Soft shadow */
+            animation: fadeIn 1s ease-out forwards; /* Fade in animation */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+    </style>
 </head>
 <body>
+    <h1>¿QUIERES TUS FLORES AMARILLAS?</h1>
+    
+    <div class="button-container">
+        <input type="button" onclick="accionParaCuandoEllaTeDigaQueSi()" id="btnSi" Value="SI" />
+        <input type="button" onmouseover="mueveElBoton()" id="btnNo" Value="NO" />
+    </div>
 
-<div class="flower">
-    <div class="text-above">De Faster Academy</div>
-    <div class="mid">
-    </div>
-    <div class="Petal1 p1">
-    </div>
-    <div class="Petal1 p2">
-    </div>
-    <div class="Petal1 p3">
-    </div>
-    <div class="Petal1 p4">
-    </div>
-    <div class="Petal2 p1">
-    </div>
-    <div class="Petal2 p2">
-    </div>
-    <div class="Petal2 p3">
-    </div>
-    <div class="Petal2 p4">
-    </div>
-    <div class="Petal3 p1">
-    </div>
-    <div class="Petal3 p2">
-    </div>
-    <div class="Petal3 p3">
-    </div>
-    <div class="Petal3 p4">
-    </div>
-    <div class="text-below">Para esa persona L. </div>
-  </div>
+    <img id="largeFlower" src="" alt="¡Una hermosa flor amarilla!">
+
+    <script>
+        const flowerImageUrls = [
+            'descarga.jpg', // Example: Simple yellow flower (replace with your own)
+            'descarga.jpg', // Example: Another yellow flower (replace with your own)
+            'descarga.jpg'  // Example: Sunflower (replace with your own)
+        ]; // Array of yellow flower image URLs for bouncing background
+
+        const largeFlowerUrl = 'descarga.jpg'; // URL for the single large flower (replace this!)
+
+        // Function to create and add bouncing flowers to the background
+        function createBouncingFlowers() {
+            const numberOfBouncingFlowers = 15; // Number of flowers to display in the background
+            for (let i = 0; i < numberOfBouncingFlowers; i++) {
+                const flower = document.createElement('img');
+                flower.src = flowerImageUrls[Math.floor(Math.random() * flowerImageUrls.length)];
+                flower.classList.add('bouncing-flower');
+                document.body.appendChild(flower);
+
+                // Random initial position
+                flower.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+                flower.style.top = `${Math.random() * 100}vh`;  // Random vertical position
+
+                // Random animation delay and duration for variation
+                flower.style.animationDelay = `${Math.random() * -5}s`; // Start at different points in animation
+                flower.style.animationDuration = `${3 + Math.random() * 4}s`; // Vary animation speed
+            }
+        }
+
+        // Call this function when the page loads to add bouncing flowers
+        window.onload = createBouncingFlowers;
+
+        // Function for when "SI" is clicked
+        function accionParaCuandoEllaTeDigaQueSi() {
+            alert("¡FLORES AMARILLAS PARA MI NIÑA!");
+            
+            const largeFlower = document.getElementById("largeFlower");
+            largeFlower.src = largeFlowerUrl; // Set the source of the large flower image
+            largeFlower.style.display = "block"; // Make the large flower visible
+
+            // Optionally, you can make it disappear after a few seconds
+            setTimeout(() => {
+                largeFlower.style.display = "none";
+                largeFlower.src = ""; // Clear the source
+            }, 5000); // Image disappears after 5 seconds
+        }
+
+        // Function to move the "NO" button
+        function mueveElBoton() {
+            const btnNo = document.getElementById("btnNo");
+            const btnSi = document.getElementById("btnSi");
+
+            const btnNoRect = btnNo.getBoundingClientRect();
+            const btnSiRect = btnSi.getBoundingClientRect();
+
+            let newX, newY;
+            let attempts = 0;
+            const maxAttempts = 50;
+            const padding = 20; // Minimum distance from screen edges and other button
+
+            do {
+                newX = Math.random() * (window.innerWidth - btnNoRect.width - padding * 2) + padding;
+                newY = Math.random() * (window.innerHeight - btnNoRect.height - padding * 2) + padding;
+
+                attempts++;
+                const overlapsSi = !(newX + btnNoRect.width < btnSiRect.left ||
+                                      newX > btnSiRect.right ||
+                                      newY + btnNoRect.height < btnSiRect.top ||
+                                      newY > btnSiRect.bottom);
+
+                if (!overlapsSi) {
+                    break;
+                }
+            } while (attempts < maxAttempts);
+
+            if (attempts < maxAttempts) {
+                btnNo.style.position = "absolute";
+                btnNo.style.left = `${newX}px`;
+                btnNo.style.top = `${newY}px`;
+            } else {
+                console.warn("Could not find a non-overlapping position for 'NO' button.");
+                btnNo.style.position = "absolute";
+                btnNo.style.left = `${Math.random() < 0.5 ? padding : window.innerWidth - btnNoRect.width - padding}px`;
+                btnNo.style.top = `${Math.random() < 0.5 ? padding : window.innerHeight - btnNoRect.height - padding}px`;
+            }
+        }
+    </script>
 </body>
 </html>
